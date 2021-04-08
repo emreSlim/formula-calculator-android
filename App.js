@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   Animated,
+  Dimensions,
   Keyboard,
   Pressable,
   StatusBar,
@@ -13,6 +14,8 @@ import InputBox from './src/components/InputBox';
 
 NavigationBar.setColor('#000000');
 
+const {width} = Dimensions.get('window');
+
 export default function App() {
   const [input, setInput] = useState('0');
 
@@ -20,7 +23,7 @@ export default function App() {
 
   const [digitsContainerDimension, setDigitsContainersDimensions] = useState({
     height: 0,
-    width: 0,
+    width: width - 20,
   });
 
   const histoyContainerHeight = useState(new Animated.Value(0))[0];
