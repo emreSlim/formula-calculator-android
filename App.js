@@ -18,11 +18,16 @@ export default function App() {
 
   const [isHistoryDisplayed, setHistoryDisplay] = useState(false);
 
+  const [digitsContainerDimension, setDigitsContainersDimensions] = useState({
+    height: 0,
+    width: 0,
+  });
+
   const histoyContainerHeight = useState(new Animated.Value(0))[0];
 
   function toggleHistory(timeLength = 1000) {
     Animated.timing(histoyContainerHeight, {
-      toValue: isHistoryDisplayed ? 0 : 376,
+      toValue: isHistoryDisplayed ? 0 : digitsContainerDimension.height,
       duration: timeLength,
       useNativeDriver: false,
     }).start();
@@ -42,6 +47,8 @@ export default function App() {
           setInput={setInput}
           histoyContainerHeight={histoyContainerHeight}
           toggleHistory={toggleHistory}
+          setDigitsContainersDimensions={setDigitsContainersDimensions}
+          digitsContainerDimension={digitsContainerDimension}
         />
       </>
     </Pressable>

@@ -1,6 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import CustomButton from './CustomActionButton';
+
+const {width} = Dimensions.get('window');
 
 export default function ActionButtonContainer({setInput, toggleHistory}) {
   function backspace() {
@@ -28,7 +30,7 @@ export default function ActionButtonContainer({setInput, toggleHistory}) {
         style={styles.flex}
         onPress={backspace}
         iconSource={require('../icons/clear.png')}
-        iconStyle={{width: 40}}
+        iconStyle={{width: width / 10}}
       />
     </View>
   );
@@ -43,6 +45,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flex: {
-    width: 80,
+    width: width / 5,
   },
 });

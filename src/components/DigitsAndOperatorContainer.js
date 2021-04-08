@@ -1,18 +1,25 @@
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import Digit from './CustomDigitOrOperatorButton';
 import Operator from './CustomDigitOrOperatorButton';
 import calculate from '../functions/calculate';
 import History from './History';
 
-const chars = ['1', '2', '3', '.', '4', '5', '6', '0', '7', '8', '9'];
+const chars1stRow = ['1', '2', '3', '.'];
+
+const chars2ndRow = ['4', '5', '6', '0'];
+
+const chars3rdRow = ['7', '8', '9'];
 
 //special operator chars '÷', '×'
+const {width} = Dimensions.get('window');
 
 export default function DigitsAndOperatorContainer({
   setInput,
   histoyContainerHeight,
   toggleHistory,
+  setDigitsContainersDimensions,
+  digitsContainerDimension,
 }) {
   const [historyArray, setHistoryArray] = useState([]);
 
@@ -70,45 +77,78 @@ export default function DigitsAndOperatorContainer({
   }
 
   return (
-    <View style={styles.mainContainer}>
-      <Operator
-        title="÷"
-        textStyle={styles.operatorTextStyle}
-        onPress={dividePressHandler}
-      />
-      <Operator
-        title="×"
-        textStyle={styles.operatorTextStyle}
-        onPress={multiplyPressHandler}
-      />
-      <Operator
-        title="−"
-        textStyle={{fontSize: 70, bottom: 7, color: '#af6'}}
-        onPress={subtractPressHandler}
-      />
-      <Operator
-        title="+"
-        textStyle={styles.operatorTextStyle}
-        onPress={addPressHandler}
-      />
-
-      {chars.map(char => (
-        <Digit
-          title={char}
-          key={char}
-          onPress={() => {
-            digitOrDecimalPressHandler(char);
-          }}
+    <View
+      style={styles.mainContainer}
+      onLayout={e =>
+        setDigitsContainersDimensions({
+          height: e.nativeEvent.layout.height * 1,
+          width: e.nativeEvent.layout.width * 1,
+        })
+      }>
+      <View style={styles.row}>
+        <Operator
+          title="÷"
+          textStyle={styles.operatorTextStyle}
+          onPress={dividePressHandler}
         />
-      ))}
+        <Operator
+          title="×"
+          textStyle={styles.operatorTextStyle}
+          onPress={multiplyPressHandler}
+        />
+        <Operator
+          title="−"
+          textStyle={styles.operatorTextStyle}
+          onPress={subtractPressHandler}
+        />
+        <Operator
+          title="+"
+          textStyle={styles.operatorTextStyle}
+          onPress={addPressHandler}
+        />
+      </View>
+      <View style={styles.row}>
+        {chars1stRow.map(char => (
+          <Digit
+            title={char}
+            key={char}
+            onPress={() => {
+              digitOrDecimalPressHandler(char);
+            }}
+          />
+        ))}
+      </View>
+      <View style={styles.row}>
+        {chars2ndRow.map(char => (
+          <Digit
+            title={char}
+            key={char}
+            onPress={() => {
+              digitOrDecimalPressHandler(char);
+            }}
+          />
+        ))}
+      </View>
+      <View style={styles.row}>
+        {chars3rdRow.map(char => (
+          <Digit
+            title={char}
+            key={char}
+            onPress={() => {
+              digitOrDecimalPressHandler(char);
+            }}
+          />
+        ))}
+        <Operator
+          title="="
+          color="#480"
+          textStyle={{fontSize: 60, bottom: 2}}
+          onPress={equalsPressHandler}
+        />
+      </View>
 
-      <Operator
-        title="="
-        color="#480"
-        textStyle={{fontSize: 60, bottom: 2}}
-        onPress={equalsPressHandler}
-      />
       <History
+        width={digitsContainerDimension.width}
         histoyContainerHeight={histoyContainerHeight}
         historyArray={historyArray}
         setHistoryArray={setHistoryArray}
@@ -120,16 +160,17 @@ export default function DigitsAndOperatorContainer({
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
     marginVertical: 10,
     // position: 'absolute',
     width: '100%',
   },
   operatorTextStyle: {
     color: '#af6',
-    fontSize: 60,
+    fontSize: width / 7,
     bottom: 2,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });

@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import {
   Animated,
+  Dimensions,
   Image,
   Keyboard,
   StyleSheet,
   Text,
   TouchableOpacity,
 } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 export default function CustomDigitOrOperatorButton({
   title,
@@ -66,15 +69,18 @@ export default function CustomDigitOrOperatorButton({
   );
 }
 
+const buttonSize = width / 5;
+const fontSize = width / 8;
+
 const styles = StyleSheet.create({
   touchable: {
     borderRadius: 3,
   },
   container: {
-    width: 80,
-    height: 80,
+    width: buttonSize,
+    height: buttonSize,
     flexDirection: 'row',
-    borderRadius: 40,
+    borderRadius: buttonSize,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 7,
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'roboto',
     color: '#fff',
-    fontSize: 50,
+    fontSize: fontSize,
   },
   icon: {
     tintColor: '#fff',

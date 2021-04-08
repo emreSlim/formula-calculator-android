@@ -4,12 +4,13 @@ import CustomButton from './CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function History({
+  width,
   histoyContainerHeight,
   historyArray,
   setHistoryArray,
   toggleHistory,
 }) {
-  const listWidth = useState(new Animated.Value(400))[0];
+  const listWidth = useState(new Animated.Value(width))[0];
 
   function clearHistory() {
     Animated.timing(listWidth, {
@@ -18,7 +19,7 @@ export default function History({
       useNativeDriver: false,
     }).start(() => {
       setHistoryArray([]);
-      listWidth.setValue(400);
+      listWidth.setValue(width);
       toggleHistory();
     });
   }
@@ -27,13 +28,18 @@ export default function History({
     AsyncStorage.getItem('histoy').then(data =>
       data ? setHistoryArray(JSON.parse(data)) : undefined,
     );
-  }, []);
+  }, [setHistoryArray]);
 
   useEffect(() => {
     AsyncStorage.setItem('histoy', JSON.stringify(historyArray));
   }, [historyArray]);
   return (
-    <Animated.View style={{...styles.container, height: histoyContainerHeight}}>
+    <Animated.View
+      style={{
+        ...styles.container,
+        height: histoyContainerHeight,
+        width: width,
+      }}>
       {historyArray.length > 0 ? (
         <>
           <Animated.FlatList
@@ -43,8 +49,14 @@ export default function History({
             data={historyArray}
             renderItem={({item}) => (
               <Pressable style={styles.listItem}>
-                <Text style={styles.input}>{item.input}</Text>
-                <Text style={styles.output}>= {item.output}</Text>
+                <Text
+                  numberOfLines={Math.ceil(item.input.length / 45)}
+                  style={styles.input}>
+                  {item.input}
+                </Text>
+                <Text numberOfLines={1} style={styles.output}>
+                  = {item.output}
+                </Text>
               </Pressable>
             )}
           />
@@ -66,7 +78,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 0,
-    width: '95.5%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000',
@@ -78,7 +89,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginRight: 10,
-    width: 380,
   },
   listItem: {
     borderBottomWidth: 1,

@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import {
   Animated,
+  Dimensions,
   Image,
   Keyboard,
   StyleSheet,
   Text,
   TouchableHighlight,
 } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 export default function CustomActionButton({
   title,
@@ -65,15 +68,17 @@ export default function CustomActionButton({
   );
 }
 
+const fontSize = width / 13;
+
 const styles = StyleSheet.create({
   touchable: {
     borderRadius: 3,
   },
   container: {
-    borderColor: '#222',
-    borderBottomWidth: 0.5,
-    height: 60,
-    width: 80,
+    borderColor: '#444',
+    borderBottomWidth: 1,
+    height: width / 7,
+    width: width / 8,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -81,14 +86,14 @@ const styles = StyleSheet.create({
   text: {
     padding: 10,
     color: '#888',
-    fontFamily: 'Roboto',
-    fontSize: 30,
+    fontFamily: 'roboto',
+    fontSize: fontSize,
   },
   icon: {
     tintColor: '#888',
     borderRadius: 3,
     margin: 5,
-    width: 30,
-    height: 30,
+    width: fontSize,
+    height: width / 13,
   },
 });
